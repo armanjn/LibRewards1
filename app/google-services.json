@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "325120547334",
+    "firebase_url": "https://lib-rewards.firebaseio.com",
+    "project_id": "lib-rewards",
+    "storage_bucket": "lib-rewards.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325120547334:android:861d639dfed2828a474187",
+        "android_client_info": {
+          "package_name": "com.example.librewards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325120547334-pbl82l1oa6npn96tnfmk1aafmp1dlncs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXqYukm1twsLPnSCzFw8RhHgA1ttWX0rw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "325120547334-pbl82l1oa6npn96tnfmk1aafmp1dlncs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
