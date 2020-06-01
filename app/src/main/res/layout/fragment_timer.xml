@@ -24,13 +24,27 @@
         android:paddingBottom="20dp"
         android:text="@string/timer"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-         />
+        tools:layout_editor_absoluteY="212dp" />
+
+    <EditText
+        android:id="@+id/startText"
+        android:layout_width="266dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/text_border"
+        android:hint="Please enter the start code"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stopwatch" />
 
     <Chronometer
+        android:id="@+id/stopwatch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="96dp"
         android:textColor="#161F00"
         android:textColorHint="#161F00"
         android:textColorLink="#F7FFF2"
@@ -38,6 +52,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="268dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#A1C349"
+        android:text="@string/start"
+        android:textColor="#F7FFF2"
+        app:iconTint="#0A1C34"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startText" />
+
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="268dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#87a330"
+        android:text="@string/stop"
+        android:textColor="#F7FFF2"
+        android:visibility="invisible"
+        app:iconTint="#0A1C34"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startText" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
