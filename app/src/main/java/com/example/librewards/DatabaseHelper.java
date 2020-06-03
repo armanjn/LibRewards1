@@ -1,36 +1,129 @@
 package com.example.librewards;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "codes.db";
-    public static final String TABLE_NAME = "start_codes_table";
-    public static final String COL_1 = "START_CODES";
-    public static final String TABLE_2_NAME = "stop_codes_table";
-    public static final String COL_2 = "START_CODES";
-    public static final String TABLE_3_NAME = "reward_codes_table";
-    public static final String COL_3 = "REWARD_CODES";
 
-    public DatabaseHelper(Context context) {
+    public static final String DATABASE_NAME = "codes.db";
+    public static final String TABLE1 = "start_codes_table";
+    public static final String TABLE2 = "stop_codes_table";
+    public static final String TABLE3 = "reward_codes_table";
+    public static final String TABLE4 = "points_table";
+
+
+    public DatabaseHelper(Context context)  {
         super(context, DATABASE_NAME, null, 1);
         SQLiteDatabase db = this.getWritableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME + " (TIMER_START_CODES INTEGER PRIMARY KEY) ");
-        db.execSQL("create table " + TABLE_2_NAME + " (TIMER_STOP_CODES INTEGER PRIMARY KEY) ");
-        db.execSQL("create table " + TABLE_3_NAME + " (REWARD_CODES INTEGER PRIMARY KEY) ");
+        String table1 = "CREATE TABLE " + TABLE1 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,start_codes INTEGER) ";
+        String table2 = "CREATE TABLE " + TABLE2 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,stop_codes INTEGER) ";
+        String table3 = "CREATE TABLE " + TABLE3 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,reward_codes INTEGER) ";
+        String table4 = "CREATE TABLE " + TABLE4 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,points INTEGER) ";
+        db.execSQL(table1);
+        db.execSQL(table2);
+        db.execSQL(table3);
+        db.execSQL(table4);
 
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS '"+ TABLE_NAME + "'");
-        db.execSQL("DROP TABLE IF EXISTS '"+ TABLE_2_NAME + "'");
-        db.execSQL("DROP TABLE IF EXISTS '"+ TABLE_3_NAME + "'");
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE1);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE2);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE3);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE4);
         onCreate(db);
     }
+
+    public void storeStartCodes(List<String> startCodesList){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql = "INSERT INTO TABLE1 (start_codes) VALUES (?)";
+        db.beginTransaction();
+
+        SQLiteStatement stmt = db.compileStatement(sql);
+        for(int i=0 ; i< startCodesList.size(); i++){
+            stmt.bindString(1,startCodesList.get(i));
+            stmt.execute();
+            stmt.clearBindings();
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
+
+    public boolean insertStartCodes(String startCodes){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("start_codes", startCodes);
+        long result =  db.insert(TABLE1, null, contentValues);
+        if (result == -1){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public boolean insertStopCodes(String stopCodes){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("stop_codes", stopCodes);
+        long result =  db.insert(TABLE2, null, contentValues);
+        if (result == -1){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public boolean insertRewardCodes(String rewardCodes){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("reward_codes", rewardCodes);
+        long result =  db.insert(TABLE3, null, contentValues);
+        if (result == -1){
+            return false;
+        }
+        else {
+            return true;
+        }
+
+    }
+
+
+    public boolean insertPoints(int points){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("points", points);
+        long result =  db.insert(TABLE4, null, contentValues);
+        if (result == -1){
+            return false;
+        }
+        else {
+            return true;
+        }
+
+    }
+
+
 }
+

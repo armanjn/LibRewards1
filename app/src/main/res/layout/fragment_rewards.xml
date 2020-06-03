@@ -31,7 +31,7 @@
     <Button
         android:id="@+id/startButton3"
         android:layout_width="268dp"
-        android:layout_height="63dp"
+        android:layout_height="66dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="#A1C349"
         android:text="@string/start"
@@ -43,7 +43,7 @@
 
     <EditText
         android:id="@+id/startText3"
-        android:layout_width="266dp"
+        android:layout_width="268dp"
         android:layout_height="63dp"
         android:layout_marginTop="200dp"
         android:background="@drawable/text_border"
