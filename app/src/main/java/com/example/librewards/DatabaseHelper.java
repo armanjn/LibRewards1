@@ -14,12 +14,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "codes.db";
+    public static final String DATABASE_NAME = "codes91.db";
     public static final String TABLE1 = "start_codes_table";
     public static final String TABLE2 = "stop_codes_table";
     public static final String TABLE3 = "reward_codes_table";
@@ -33,9 +34,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String table1 = "CREATE TABLE " + TABLE1 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,start_codes INTEGER) ";
-        String table2 = "CREATE TABLE " + TABLE2 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,stop_codes INTEGER) ";
-        String table3 = "CREATE TABLE " + TABLE3 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,reward_codes INTEGER) ";
+        String table1 = "CREATE TABLE " + TABLE1 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes INTEGER) ";
+        String table2 = "CREATE TABLE " + TABLE2 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes INTEGER) ";
+        String table3 = "CREATE TABLE " + TABLE3 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes INTEGER) ";
         String table4 = "CREATE TABLE " + TABLE4 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,points INTEGER) ";
         db.execSQL(table1);
         db.execSQL(table2);
@@ -54,9 +55,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void storeStartCodes(List<String> startCodesList){
+    public Cursor getAllData(String col, String table){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " +  col  + " FROM " +  table, null);
+        return res;
+    }
+
+    public void deleteData(String table){
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "INSERT INTO TABLE1 (start_codes) VALUES (?)";
+        String sql = "DELETE FROM " + table;
+        db.beginTransaction();
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
+
+    public void storeCodes(List<String> startCodesList, String table){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql = "INSERT INTO " + table + '('+ "codes" + ')' +  "VALUES (?)";
         db.beginTransaction();
 
         SQLiteStatement stmt = db.compileStatement(sql);
@@ -68,6 +84,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.setTransactionSuccessful();
         db.endTransaction();
     }
+
+
 
     public boolean insertStartCodes(String startCodes){
         SQLiteDatabase db = this.getWritableDatabase();
