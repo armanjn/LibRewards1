@@ -27,6 +27,7 @@ import java.util.List;
 
 public class TimerFragment extends Fragment {
     Dialog popup;
+    Dialog namePopup;
     Chronometer stopwatch;
     DatabaseHelper myDb;
 
@@ -42,7 +43,9 @@ public class TimerFragment extends Fragment {
     private String textToEdit;
     private Button startButton;
     private Button stopButton;
+    private Button nameButton;
     private TextView points;
+    private TextView name;
     TimerListener listener;
 
     public interface TimerListener {
@@ -52,6 +55,7 @@ public class TimerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View v = inflater.inflate(R.layout.fragment_timer, container, false);
         stopwatch = v.findViewById(R.id.stopwatch);
         editText = v.findViewById(R.id.startText);
@@ -60,13 +64,17 @@ public class TimerFragment extends Fragment {
         myDb = new DatabaseHelper(getActivity().getApplicationContext());
         points = v.findViewById(R.id.points);
         points.setText(String.valueOf(myDb.getPoints()));
+        name = v.findViewById(R.id.nameTimer);
+        name.setText("Hey, " + myDb.getName());
 
 
         SharedPreferences timerPrefs = getActivity().getSharedPreferences("timerPrefs", Context.MODE_PRIVATE);
         boolean firstStart = timerPrefs.getBoolean("firstStart", true);
         if (firstStart) {
+
             addInitialCodes();
         }
+
 
         addCurrCodes(currStartCodes,"start_codes_table");
         addCurrCodes(currStopCodes,"stop_codes_table");
@@ -80,9 +88,9 @@ public class TimerFragment extends Fragment {
                 @Override
                 public void onClick(final View v) {
                     if(editText.length() == 0){
-                    toastMessage("No Code Was Entered");
+                    toastMessage("No code was entered, please try again");
                     }
-                    if (currStartCodes.contains(editText.getText().toString())) {
+                    else if (currStartCodes.contains(editText.getText().toString())) {
                         currStartCodes.remove(editText.getText().toString());
                         myDb.deleteCode("start_codes_table", editText.getText().toString());
                         stopwatch.setBase(SystemClock.elapsedRealtime());
@@ -135,6 +143,7 @@ public class TimerFragment extends Fragment {
         return v;
 
     }
+
 
     public void updatePoints(int newPoints){
         points.setText(String.valueOf(newPoints));
@@ -202,6 +211,10 @@ public class TimerFragment extends Fragment {
             points.setText(String.valueOf(myDb.getPoints()));
         }
         showPopup("You have earned: " + pointsEarned + " points, well done!");
+    }
+
+    public void initialSetName(){
+        name.setText("Hey, "+ myDb.getName());
     }
 
     public void showPopup(String text){

@@ -39,4 +39,31 @@ public class ListFromFile {
 
         return lines;
     }
+
+    public List<String> readRewardsLine(String path) {
+        List<String> lines = new ArrayList<>();
+        int i = 0;
+        AssetManager am = context.getAssets();
+
+        try {
+            InputStream inputStream = am.open(path);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+
+                String[] split = line.split(",");
+                for(String s : split) {
+                    lines.add(s);
+
+                }
+            }
+            inputStream.close();
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return lines;
+    }
 }

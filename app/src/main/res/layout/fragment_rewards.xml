@@ -63,7 +63,8 @@
         android:id="@+id/rewardText"
         android:layout_width="269dp"
         android:layout_height="93dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/text_border"
         android:hint="@string/rewardsText"
         android:importantForAutofill="no"
@@ -80,15 +81,27 @@
         android:id="@+id/rewardButton"
         android:layout_width="269dp"
         android:layout_height="95dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="40dp"
         android:backgroundTint="#87a330"
         android:text="@string/getRewardedNow"
         android:textColor="#F7FFF2"
         app:iconTint="#0A1C34"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rewardText" />
+
+    <TextView
+        android:id="@+id/nameRewards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/name"
+        android:textColor="#161F00"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/container"
+        app:layout_constraintTop_toTopOf="@+id/container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

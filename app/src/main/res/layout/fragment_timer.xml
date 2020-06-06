@@ -20,7 +20,6 @@
         android:layout_marginTop="90dp"
         android:background="@drawable/layout_bg"
         android:paddingLeft="20dp"
-        android:paddingTop="10dp"
         android:paddingRight="20dp"
         android:paddingBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,22 +64,21 @@
         android:id="@+id/startText"
         android:layout_width="269dp"
         android:layout_height="63dp"
-        android:layout_marginTop="20dp"
         android:background="@drawable/text_border"
         android:hint="@string/startText"
+        android:importantForAutofill="no"
         android:inputType="none"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/startButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stopwatch"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/stopwatch" />
 
     <Chronometer
         android:id="@+id/stopwatch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="80dp"
         android:textColor="#161F00"
         android:textColorHint="#161F00"
         android:textColorLink="#F7FFF2"
@@ -94,7 +92,6 @@
         android:id="@+id/startButton"
         android:layout_width="268dp"
         android:layout_height="63dp"
-        android:layout_marginBottom="23dp"
         android:backgroundTint="#A1C349"
         android:text="@string/start"
         android:textColor="#F7FFF2"
@@ -108,7 +105,6 @@
         android:id="@+id/stopButton"
         android:layout_width="268dp"
         android:layout_height="66dp"
-        android:layout_marginBottom="23dp"
         android:backgroundTint="#87a330"
         android:text="@string/stop"
         android:textColor="#F7FFF2"
@@ -118,6 +114,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startText" />
+
+    <TextView
+        android:id="@+id/nameTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/name"
+        android:textColor="#161F00"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timeContainer" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE2 = "stop_codes_table";
     public static final String TABLE3 = "reward_codes_table";
     public static final String TABLE4 = "points_table";
+    public static final String TABLE5 = "name_table";
+
+
 
 
     public DatabaseHelper(Context context)  {
@@ -29,10 +32,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String table2 = "CREATE TABLE " + TABLE2 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes TEXT) ";
         String table3 = "CREATE TABLE " + TABLE3 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes TEXT, cost INTEGER) ";
         String table4 = "CREATE TABLE " + TABLE4 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,points INTEGER)";
+        String table5 = "CREATE TABLE " + TABLE5 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT)";
         db.execSQL(table1);
         db.execSQL(table2);
         db.execSQL(table3);
         db.execSQL(table4);
+        db.execSQL(table5);
 
     }
 
@@ -46,10 +51,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void addName(String yourName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql = ("INSERT INTO " + TABLE5 + '(' + "name" + ')' + "VALUES (?)");
+        db.beginTransaction();
+        SQLiteStatement stmt = db.compileStatement(sql);
+        stmt.bindString(1,yourName);
+        stmt.execute();
+        stmt.clearBindings();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+    }
+
     public Cursor getAllData(String col, String table){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor c = db.rawQuery("SELECT " +  col  + " FROM " +  table, null);
         return c;
+    }
+
+    public String getName(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String output = "";
+        Cursor c = db.rawQuery("SELECT " + "name" + " FROM " + TABLE5, null);
+        if(c != null && c.getCount() > 0) {
+            if(c.moveToFirst()){
+                output = c.getString(c.getColumnIndex("name"));
+            }
+        }
+        c.close();
+        return output;
     }
 
     public int getPoints(){
@@ -68,6 +99,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return output;
     }
 
+    public int getCost(String code) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int output = 0;
+        Cursor c = db.rawQuery("SELECT " + "cost" + " FROM " + TABLE3 + " WHERE codes = " + "'" + code + "'", null);
+        if (c != null && c.getCount() > 0) {
+            if (c.moveToFirst()) {
+
+                output = c.getInt(c.getColumnIndex("cost"));
+
+            }
+        }
+        c.close();
+        return output;
+    }
+
     public void updateCodes(String table, List<String> newCodesList) {
         int id = 1;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -79,12 +125,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void updateRewardCodes(List<String> newCodesList) {
+        int id = 1;
+        int j = 1;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        for (int i = 0; i < newCodesList.size()-1; i+=2) {
+            contentValues.put("codes", newCodesList.get(i));
+            contentValues.put("cost", newCodesList.get(j));
+            db.update(TABLE3, contentValues, "id = ?", new String[]{String.valueOf(id)});
+            id++;
+            j+=2;
+        }
+    }
+
     public void addPoints(int points){
         int id = 1;
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("points", getPoints()+ points);
         db.update(TABLE4, contentValues, "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    public void storeRewards(List<String> rewardList){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql = "INSERT INTO " + TABLE3 + '('+ "codes,cost" + ')' +  "VALUES (?,?)";
+        db.beginTransaction();
+        int j = 1;
+        SQLiteStatement stmt = db.compileStatement(sql);
+        for(int i=0 ; i< rewardList.size()-1; i+=2) {
+                stmt.bindString(1, rewardList.get(i));
+                stmt.bindString(2, rewardList.get(j));
+                stmt.execute();
+                stmt.clearBindings();
+                j+=2;
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     public void minusPoints(int points){
@@ -114,6 +191,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.setTransactionSuccessful();
         db.endTransaction();
     }
+
 
     public void initialPoints(){
         SQLiteDatabase db = this.getWritableDatabase();

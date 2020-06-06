@@ -22,5 +22,12 @@
     <string name="startText">Please enter the start code</string>
     <string name="pointsholdertimer">pointsHolderTimer</string>
     <string name="closeButton">close button</string>
+    <string name="name">name</string>
+    <string name="nameRequest">Welcome to Lib Rewards! Can we start by taking your name, please?</string>
+    <string name="enterName">Name</string>
+    <string name="users_name_to_enter">users name to enter</string>
+    <string name="letsGo">Let\'s Go!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
