@@ -7,7 +7,6 @@
     android:background="#ca2e55"
     tools:context=".MainActivity">
 
-
     <ImageView
         android:id="@+id/logo"
         android:layout_width="209dp"
@@ -53,9 +52,17 @@
                 android:text="@string/rewards" />
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.viewpager.widget.ViewPager>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

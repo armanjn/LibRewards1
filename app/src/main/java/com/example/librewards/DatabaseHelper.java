@@ -20,7 +20,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "codes91.db";
+    public static final String DATABASE_NAME = "codes2.db";
     public static final String TABLE1 = "start_codes_table";
     public static final String TABLE2 = "stop_codes_table";
     public static final String TABLE3 = "reward_codes_table";
@@ -34,10 +34,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String table1 = "CREATE TABLE " + TABLE1 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes INTEGER) ";
-        String table2 = "CREATE TABLE " + TABLE2 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes INTEGER) ";
-        String table3 = "CREATE TABLE " + TABLE3 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes INTEGER) ";
-        String table4 = "CREATE TABLE " + TABLE4 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,points INTEGER) ";
+        String table1 = "CREATE TABLE " + TABLE1 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes TEXT) ";
+        String table2 = "CREATE TABLE " + TABLE2 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes TEXT) ";
+        String table3 = "CREATE TABLE " + TABLE3 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes TEXT) ";
+        String table4 = "CREATE TABLE " + TABLE4 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,points INTEGER)";
         db.execSQL(table1);
         db.execSQL(table2);
         db.execSQL(table3);
@@ -56,28 +56,68 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getAllData(String col, String table){
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor res = db.rawQuery("SELECT " +  col  + " FROM " +  table, null);
-        return res;
-    }
-
-    public void deleteData(String table){
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "DELETE FROM " + table;
-        db.beginTransaction();
-
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        Cursor c = db.rawQuery("SELECT " +  col  + " FROM " +  table, null);
+        return c;
     }
 
-    public void storeCodes(List<String> startCodesList, String table){
+    public int getPoints(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int output = 0;
+        Cursor c = db.rawQuery("SELECT " + "points" + " FROM " + TABLE4, null);
+        if(c != null && c.getCount() > 0){
+            if(c.moveToFirst()){
+
+                output = c.getInt(0);
+
+            }
+        }
+
+        c.close();
+        return output;
+    }
+
+    public boolean updateCodes(String table, List<String> newCodesList) {
+        int id = 1;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        for (int i = 0; i < newCodesList.size(); i++) {
+            contentValues.put("codes", newCodesList.get(i));
+            db.update(table, contentValues, "id = ?", new String[]{String.valueOf(id)});
+            id++;
+        }
+        return true;
+    }
+
+    public void addPoints(int points){
+        int id = 1;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("points", getPoints()+ points);
+        db.update(TABLE4, contentValues, "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    public void minusPoints(int points){
+        int id = 1;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("points", getPoints() - points);
+        db.update(TABLE4, contentValues, "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    public void deleteCode(String table, String code){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + table + " WHERE "+ "codes" + "=\"" + code + "\";");
+    }
+
+    public void storeCodes(List<String> codesList, String table){
         SQLiteDatabase db = this.getWritableDatabase();
         String sql = "INSERT INTO " + table + '('+ "codes" + ')' +  "VALUES (?)";
         db.beginTransaction();
 
         SQLiteStatement stmt = db.compileStatement(sql);
-        for(int i=0 ; i< startCodesList.size(); i++){
-            stmt.bindString(1,startCodesList.get(i));
+        for(int i=0 ; i< codesList.size(); i++){
+            stmt.bindString(1,codesList.get(i));
             stmt.execute();
             stmt.clearBindings();
         }
@@ -85,6 +125,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
+    public void initialPoints(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO " + TABLE4 + '(' + "points" + ')' + "VALUES ('0')");
+    }
 
 
     public boolean insertStartCodes(String startCodes){
