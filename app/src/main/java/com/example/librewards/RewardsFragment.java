@@ -35,7 +35,6 @@ public class RewardsFragment extends Fragment {
     private TextView points;
     private TextView name;
     private Button rewardButton;
-    public List<String> currRewardCodes = new ArrayList<>();
     public List<String> rewardsCodes = new ArrayList<>();
 
     RewardsFragment.RewardsListener listener;
@@ -103,7 +102,7 @@ public class RewardsFragment extends Fragment {
     }
 
     public void initialSetName(){
-        name.setText("Hey, "+ myDb.getName());
+        name.setText(getString(R.string.Hey)+ myDb.getName());
     }
 
     private List<String> addNewCodes(String path){

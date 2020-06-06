@@ -112,7 +112,6 @@
                 android:layout_height="85dp"
                 android:layout_marginStart="20dp"
                 android:backgroundTint="#FFFFFF"
-                android:contentDescription="@string/users_name_to_enter"
                 android:ems="10"
                 android:hint="@string/enterName"
                 android:importantForAutofill="no"
