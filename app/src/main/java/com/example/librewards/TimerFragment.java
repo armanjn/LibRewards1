@@ -7,13 +7,8 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.sql.Time;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +33,10 @@ public class TimerFragment extends Fragment {
     public static final String TAG = TimerFragment.class.getSimpleName();
 
     private ListFromFile listFromFile;
-    public List<String> currStartCodes = new ArrayList<String>();
-    public List<String> originalStartCodes = new ArrayList<String>();
-    public List<String> currStopCodes = new ArrayList<String>();
-    public List<String> originalStopCodes = new ArrayList<String>();
+    public List<String> currStartCodes = new ArrayList<>();
+    public List<String> originalStartCodes = new ArrayList<>();
+    public List<String> currStopCodes = new ArrayList<>();
+    public List<String> originalStopCodes = new ArrayList<>();
 
     private EditText editText;
     private String textToEdit;
@@ -95,7 +92,7 @@ public class TimerFragment extends Fragment {
                         stopwatch.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
                             @Override
                             public void onChronometerTick(Chronometer chronometer) {
-                                if ((SystemClock.elapsedRealtime() - stopwatch.getBase()) >= 50000) {
+                                if ((SystemClock.elapsedRealtime() - stopwatch.getBase()) >= 5000) {
                                     stopwatch.setBase(SystemClock.elapsedRealtime());
                                     stopwatch.stop();
                                     stopButton.setVisibility(v.INVISIBLE);
@@ -155,7 +152,7 @@ public class TimerFragment extends Fragment {
         Cursor c = myDb.getAllData("codes", table);
         c.moveToFirst();
         while(!c.isAfterLast()) {
-            codeList.add((String) c.getString(c.getColumnIndex("codes")));
+            codeList.add(c.getString(c.getColumnIndex("codes")));
             c.moveToNext();
         }
     }

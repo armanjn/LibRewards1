@@ -7,20 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "codes2.db";
+    public static final String DATABASE_NAME = "codes.db";
     public static final String TABLE1 = "start_codes_table";
     public static final String TABLE2 = "stop_codes_table";
     public static final String TABLE3 = "reward_codes_table";
@@ -36,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String table1 = "CREATE TABLE " + TABLE1 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes TEXT) ";
         String table2 = "CREATE TABLE " + TABLE2 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes TEXT) ";
-        String table3 = "CREATE TABLE " + TABLE3 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes TEXT) ";
+        String table3 = "CREATE TABLE " + TABLE3 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,codes TEXT, cost INTEGER) ";
         String table4 = "CREATE TABLE " + TABLE4 + " (id INTEGER PRIMARY KEY AUTOINCREMENT,points INTEGER)";
         db.execSQL(table1);
         db.execSQL(table2);
@@ -77,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return output;
     }
 
-    public boolean updateCodes(String table, List<String> newCodesList) {
+    public void updateCodes(String table, List<String> newCodesList) {
         int id = 1;
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -86,7 +77,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.update(table, contentValues, "id = ?", new String[]{String.valueOf(id)});
             id++;
         }
-        return true;
     }
 
     public void addPoints(int points){
@@ -128,62 +118,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void initialPoints(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("INSERT INTO " + TABLE4 + '(' + "points" + ')' + "VALUES ('0')");
-    }
-
-
-    public boolean insertStartCodes(String startCodes){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("start_codes", startCodes);
-        long result =  db.insert(TABLE1, null, contentValues);
-        if (result == -1){
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
-
-    public boolean insertStopCodes(String stopCodes){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("stop_codes", stopCodes);
-        long result =  db.insert(TABLE2, null, contentValues);
-        if (result == -1){
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
-
-    public boolean insertRewardCodes(String rewardCodes){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("reward_codes", rewardCodes);
-        long result =  db.insert(TABLE3, null, contentValues);
-        if (result == -1){
-            return false;
-        }
-        else {
-            return true;
-        }
-
-    }
-
-
-    public boolean insertPoints(int points){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("points", points);
-        long result =  db.insert(TABLE4, null, contentValues);
-        if (result == -1){
-            return false;
-        }
-        else {
-            return true;
-        }
-
     }
 
 

@@ -30,7 +30,7 @@
             android:layout_height="0sp" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
+            android:id="@+id/tabLayout"
             android:background="#ca2e55"
             app:tabSelectedTextColor="#f7fff2"
             app:tabIndicatorColor="#f7fff2"
@@ -54,15 +54,26 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    </androidx.viewpager.widget.ViewPager>
+    <ImageView
+        android:id="@+id/helpButton"
+        android:layout_width="40dp"
+        android:layout_height="35dp"
+        android:contentDescription="@string/helpButton"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="0dp"
+        android:tint="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/help" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
