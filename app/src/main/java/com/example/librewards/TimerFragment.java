@@ -92,7 +92,7 @@ public class TimerFragment extends Fragment {
                         stopwatch.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
                             @Override
                             public void onChronometerTick(Chronometer chronometer) {
-                                if ((SystemClock.elapsedRealtime() - stopwatch.getBase()) >= 5000) {
+                                if ((SystemClock.elapsedRealtime() - stopwatch.getBase()) >= 50000) {
                                     stopwatch.setBase(SystemClock.elapsedRealtime());
                                     stopwatch.stop();
                                     stopButton.setVisibility(v.INVISIBLE);
@@ -103,7 +103,7 @@ public class TimerFragment extends Fragment {
                                     @Override
                                     public void onClick(View v) {
                                         if(editText.length() == 0){
-                                            toastMessage("No Code Was Entered");
+                                            toastMessage("No code was entered");
                                         }
                                         if (currStopCodes.contains(editText.getText().toString())) {
                                             currStopCodes.remove(editText.getText().toString());
@@ -117,10 +117,16 @@ public class TimerFragment extends Fragment {
                                             startButton.setVisibility(v.VISIBLE);
 
                                         }
+                                        else{
+                                            toastMessage("The code you entered is not valid, please try again");
+                                        }
                                     }
                                 });
                             }
                         });
+                    }
+                    else{
+                        toastMessage("The code you entered is not valid, please try again");
                     }
                 }
             });
@@ -160,10 +166,40 @@ public class TimerFragment extends Fragment {
     public void setPointsFromTime(long totalTime){
         int pointsEarned = 0;
         if(totalTime > 10000 && totalTime < 20000){
-            pointsEarned = 30;
+            pointsEarned = 10;
             myDb.addPoints(pointsEarned);
             points.setText(String.valueOf(myDb.getPoints()));
 
+        }
+        else if(totalTime >= 20000 && totalTime < 40000){
+            pointsEarned = 50;
+            myDb.addPoints(pointsEarned);
+            points.setText(String.valueOf(myDb.getPoints()));
+        }
+        else if(totalTime >= 20000 && totalTime < 40000){
+            pointsEarned = 75;
+            myDb.addPoints(pointsEarned);
+            points.setText(String.valueOf(myDb.getPoints()));
+        }
+        else if(totalTime >= 40000 && totalTime < 60000){
+            pointsEarned = 125;
+            myDb.addPoints(pointsEarned);
+            points.setText(String.valueOf(myDb.getPoints()));
+        }
+        else if(totalTime >= 60000 && totalTime < 80000){
+            pointsEarned = 225;
+            myDb.addPoints(pointsEarned);
+            points.setText(String.valueOf(myDb.getPoints()));
+        }
+        else if(totalTime >= 80000 && totalTime < 100000){
+            pointsEarned = 400;
+            myDb.addPoints(pointsEarned);
+            points.setText(String.valueOf(myDb.getPoints()));
+        }
+        else if(totalTime >= 100000 && totalTime < 120000){
+            pointsEarned = 700;
+            myDb.addPoints(pointsEarned);
+            points.setText(String.valueOf(myDb.getPoints()));
         }
         showPopup("You have earned: " + pointsEarned + " points, well done!");
     }
