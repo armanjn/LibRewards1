@@ -13,7 +13,7 @@
         50 points\n45 - 59 minutes = 75 points\n1 - 2 hours = 125 points\n2 - 3 hours = 225 points\n3 - 5 hours = 400 points\n5 or more hours
         = 700 points\n\nPlease note that after 24 hours of not entering a stop code the stopwatch will reset. </string>
     <string name="getRewardedNow">Get Rewarded Now!</string>
-    <string name="rewardsText">Please enter your chosen rewards code</string>
+    <string name="rewardsText">Please enter your chosen reward code</string>
     <string name="pointsRewards">TextView</string>
     <string name="pointsRewardsText">Points</string>
     <string name="pointsholder">pointsHolder</string>

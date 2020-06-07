@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.util.TimeUnit;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.sql.Time;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +46,6 @@ public class TimerFragment extends Fragment {
     private String textToEdit;
     private Button startButton;
     private Button stopButton;
-    private Button nameButton;
     private TextView points;
     private TextView name;
     TimerListener listener;
@@ -100,7 +102,7 @@ public class TimerFragment extends Fragment {
                         stopwatch.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
                             @Override
                             public void onChronometerTick(Chronometer chronometer) {
-                                if ((SystemClock.elapsedRealtime() - stopwatch.getBase()) >= 50000) {
+                                if ((SystemClock.elapsedRealtime() - stopwatch.getBase()) >= 500000) {
                                     stopwatch.setBase(SystemClock.elapsedRealtime());
                                     stopwatch.stop();
                                     stopButton.setVisibility(v.INVISIBLE);
@@ -174,6 +176,7 @@ public class TimerFragment extends Fragment {
 
     public void setPointsFromTime(long totalTime){
         int pointsEarned = 0;
+        int minutes = (int) ((totalTime/1000) /60);
         if(totalTime > 10000 && totalTime < 20000){
             pointsEarned = 10;
             myDb.addPoints(pointsEarned);
@@ -185,32 +188,39 @@ public class TimerFragment extends Fragment {
             myDb.addPoints(pointsEarned);
             points.setText(String.valueOf(myDb.getPoints()));
         }
-        else if(totalTime >= 20000 && totalTime < 40000){
+        else if(totalTime >= 40000 && totalTime < 60000){
             pointsEarned = 75;
             myDb.addPoints(pointsEarned);
             points.setText(String.valueOf(myDb.getPoints()));
         }
-        else if(totalTime >= 40000 && totalTime < 60000){
+        else if(totalTime >= 60000 && totalTime < 80000){
             pointsEarned = 125;
             myDb.addPoints(pointsEarned);
             points.setText(String.valueOf(myDb.getPoints()));
         }
-        else if(totalTime >= 60000 && totalTime < 80000){
+        else if(totalTime >= 80000 && totalTime < 100000){
             pointsEarned = 225;
             myDb.addPoints(pointsEarned);
             points.setText(String.valueOf(myDb.getPoints()));
         }
-        else if(totalTime >= 80000 && totalTime < 100000){
+        else if(totalTime >= 100000 && totalTime < 120000){
             pointsEarned = 400;
             myDb.addPoints(pointsEarned);
             points.setText(String.valueOf(myDb.getPoints()));
         }
-        else if(totalTime >= 100000 && totalTime < 120000){
+        else if(totalTime >= 120000 && totalTime < 140000){
             pointsEarned = 700;
             myDb.addPoints(pointsEarned);
             points.setText(String.valueOf(myDb.getPoints()));
         }
-        showPopup("You have earned: " + pointsEarned + " points, well done!");
+        if(minutes == 1){
+            showPopup("Well done, you spent "+ minutes +" minute at the library and have earned " + pointsEarned + " points!\nYour new points balance is: " + myDb.getPoints());
+
+        }
+        else{
+            showPopup("Well done, you spent "+ minutes +" minutes at the library and have earned " + pointsEarned + " points!\nYour new points balance is: " + myDb.getPoints());
+
+        }
     }
 
     public void initialSetName(){
