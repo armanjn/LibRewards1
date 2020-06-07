@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
 
     DatabaseHelper myDb;
     Dialog popup;
-    Dialog namePopup;
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         myDb = new DatabaseHelper(this);
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
@@ -69,32 +68,20 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
         tabLayout.getTabAt(0).setIcon(R.drawable.timer);
         tabLayout.getTabAt(1).setIcon(R.drawable.reward);
 
-         SharedPreferences prefs = this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
-         boolean firstStart = prefs.getBoolean("firstStart", true);
-         if (firstStart){
-             showPopupName();
-             addInitialPoints();
-         }
-
-         helpButton.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 showPopup(getString(R.string.helpInfo));
-             }
-         });
-
-         myDb.addPoints(40);
-
-    }
-
-    public void addInitialPoints(){
-        myDb.initialPoints();
         SharedPreferences prefs = this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("firstStart", false);
-        editor.apply();
-    }
+        boolean firstStart = prefs.getBoolean("firstStart", true);
+        if (firstStart) {
+            showPopupName();
 
+        }
+
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopup(getString(R.string.helpInfo));
+            }
+        });
+    }
     public void showPopupName(){
         popupNameContainer.setVisibility(View.VISIBLE);
         nameButton.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +98,10 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
                 }
             }
         });
+        SharedPreferences prefs = this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("firstStart", false);
+        editor.apply();
     }
 
     public void showPopup(String text){

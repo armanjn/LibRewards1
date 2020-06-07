@@ -55,7 +55,8 @@ public class RewardsFragment extends Fragment {
         points = v.findViewById(R.id.points2);
         points.setText(String.valueOf(myDb.getPoints()));
         name = v.findViewById(R.id.nameRewards);
-        name.setText("Hey, " + myDb.getName());
+        String wholeName = getString(R.string.Hey) + " " + myDb.getName();
+        name.setText(wholeName);
 
         SharedPreferences rewardsPrefs = getActivity().getSharedPreferences("rewardsPrefs", Context.MODE_PRIVATE);
         boolean firstStart = rewardsPrefs.getBoolean("firstStart", true);
@@ -70,13 +71,20 @@ public class RewardsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(editText.length() == 0){
-                    toastMessage("No Code Was Entered");
+                    toastMessage("No code was entered, please try again");
                 }
                 if(rewardsCodes.contains(editText.getText().toString())){
-                    myDb.minusPoints(myDb.getCost(editText.getText().toString()));
-                    showPopup("Code accepted, keep it up! Your new points balance is: " + myDb.getPoints());
-                    points.setText(String.valueOf(myDb.getPoints()));
-                    listener.onPointsRewardsSent(myDb.getPoints());
+                    if(!(myDb.getPoints() <= myDb.getCost(editText.getText().toString()))){
+                        myDb.minusPoints(myDb.getCost(editText.getText().toString()));
+                        showPopup("Code accepted, keep it up! Your new points balance is: " + myDb.getPoints());
+                        points.setText(String.valueOf(myDb.getPoints()));
+                        listener.onPointsRewardsSent(myDb.getPoints());
+                    }
+                    else{
+                        showPopup(getString(R.string.insufficientFunds));
+
+                    }
+
                 }
             }
         });

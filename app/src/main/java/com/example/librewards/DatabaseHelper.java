@@ -195,7 +195,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void initialPoints(){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("INSERT INTO " + TABLE4 + '(' + "points" + ')' + "VALUES ('0')");
+        db.execSQL("INSERT INTO " + TABLE4 + '(' + "points" + ')' + "VALUES (?)");
+
     }
 
 

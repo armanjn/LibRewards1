@@ -30,7 +30,6 @@ import java.util.List;
 
 public class TimerFragment extends Fragment {
     Dialog popup;
-    Dialog namePopup;
     Chronometer stopwatch;
     DatabaseHelper myDb;
 
@@ -67,14 +66,16 @@ public class TimerFragment extends Fragment {
         points = v.findViewById(R.id.points);
         points.setText(String.valueOf(myDb.getPoints()));
         name = v.findViewById(R.id.nameTimer);
-        name.setText("Hey, " + myDb.getName());
+        String wholeName = getString(R.string.Hey) + " " +myDb.getName();
+        name.setText(wholeName);
 
 
         SharedPreferences timerPrefs = getActivity().getSharedPreferences("timerPrefs", Context.MODE_PRIVATE);
         boolean firstStart = timerPrefs.getBoolean("firstStart", true);
         if (firstStart) {
-
+            myDb.initialPoints();
             addInitialCodes();
+
         }
 
 

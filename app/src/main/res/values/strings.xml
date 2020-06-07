@@ -6,12 +6,12 @@
     <string name="timer"> Timer </string>
     <string name="rewards"> Rewards </string>
     <string name="helpButton">help button</string>
-    <string name="helpInfo"> Welcome to Lib Rewards\n\nHere, you will be awarded points for the duration your time spent at the library. Simply
+    <string name="helpInfo">Welcome to Lib Rewards\n\nHere, you will be awarded points for the duration your time spent at the library. Simply
         enter the library\'s start and stop code for the day to be awarded the points. Once you have enough points, you can then visit the library
         shop to spend them. A full list of goodies and their cost will be on display in there. The more points you rack up, the more rewards
-        you\'ll get. Here\'s how many points you\'ll get for the time spent at the library: \n\n10 - 29 minutes = 10 points\n30 - 44 minutes =
+        you\'ll get. Here\'s how many points you\'ll get for the time spent at the library:<b> \n\n10 - 29 minutes = 10 points\n30 - 44 minutes =
         50 points\n45 - 59 minutes = 75 points\n1 - 2 hours = 125 points\n2 - 3 hours = 225 points\n3 - 5 hours = 400 points\n5 or more hours
-        = 700 points\n\nPlease note that after 24 hours of not entering a stop code the stopwatch will reset. </string>
+            = 700 points</b>\n\nPlease note that after 24 hours of not entering a stop code the stopwatch will reset. </string>
     <string name="getRewardedNow">Get Rewarded Now!</string>
     <string name="rewardsText">Please enter your chosen reward code</string>
     <string name="pointsRewards">TextView</string>
@@ -29,6 +29,8 @@
     <string name="letsGo">Let\'s Go!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="Hey">\"Hey, \"</string>
+    <string name="Hey">\Hey, </string>
+    <string name="insufficientFunds">Woops! Unfortunately you don\'t have sufficient points for this reward. Please choose another reward
+    or carry on doing a great job at the library to be able to get this</string>
 
 </resources>
