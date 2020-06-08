@@ -1,3 +1,11 @@
+/*Author: Arman Jalilian
+Date of Completion: 07/06/2020
+Module Code: CSC3122
+Application Name: Lib Rewards
+Application Purpose: Rewards students as they spend time at the library
+Class Name: MainActivity
+Class Purpose: The main activity is where the fragments are called within. It is also where the navigation is called and set from.
+ */
 package com.example.librewards;
 
 import androidx.annotation.NonNull;
@@ -47,7 +55,9 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Sets the layout to the XML file associated with it
         setContentView(R.layout.activity_main);
+        //Assigns the field to the view's specified in the fragment_timer XML file file
         myDb = new DatabaseHelper(this);
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
@@ -56,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
         nameButton = findViewById(R.id.nameButton);
         popupNameContainer = findViewById(R.id.popupNameContainer);
         popupNameContainer.setVisibility(View.INVISIBLE);
+
         timerFragment = new TimerFragment();
         rewardsFragment = new RewardsFragment();
         tabLayout.setupWithViewPager(viewPager);
@@ -68,13 +79,15 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
         tabLayout.getTabAt(0).setIcon(R.drawable.timer);
         tabLayout.getTabAt(1).setIcon(R.drawable.reward);
 
+        //Creating a preference for activity on first start-up only
         SharedPreferences prefs = this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        //Anything enclosed in the 'if' statement will only run once; at first start-up. For this instance I only needed the application to set the name of the user once.
         boolean firstStart = prefs.getBoolean("firstStart", true);
         if (firstStart) {
             showPopupName();
 
         }
-
+        //Help button on standby in case a user required information about the application
         helpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,16 +95,20 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
             }
         });
     }
+    //Custom popup that asks for the users name on first start-up
     public void showPopupName(){
         popupNameContainer.setVisibility(View.VISIBLE);
         nameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(enterName.length() != 0) {
+                    //Adds the name given to the database
                     myDb.addName(enterName.getText().toString());
                     popupNameContainer.setVisibility(View.INVISIBLE);
+                    //Sets the names in the fragments instantly as they will be the first ones on show once the popup dismisses
                     timerFragment.initialSetName();
                     rewardsFragment.initialSetName();
+                    //Once the popup closes the "Help" popup opens to give the user information before they start
                     showPopup(getString(R.string.helpInfo));
                 }
                 else{
@@ -99,12 +116,14 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
                 }
             }
         });
+        //Sets the 'firstStart' boolean to false so it won't be called again on the user's device
         SharedPreferences prefs = this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("firstStart", false);
         editor.apply();
     }
 
+    //Method that creates a popup
     public void showPopup(String text){
         popup = new Dialog(this);
         popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -134,7 +153,8 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
         Toast.makeText(this,message,Toast.LENGTH_LONG).show();
     }
 
-
+    //Using the interface in both fragments, the main activity is able to facilitate communication between the two fragments. Here, it sets the points in each fragment each time
+    //it's updated
     @Override
     public void onPointsRewardsSent(int points) {
         timerFragment.updatePoints(points);
@@ -145,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
         rewardsFragment.updatedPoints(points);
     }
 
+    //Using a tab layout tutorial from YouTube user @Coding In Flow, I was able to create a tab layout and customise it so it fit my theme.
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private List<Fragment> fragments = new ArrayList<>();
