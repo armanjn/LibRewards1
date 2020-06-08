@@ -73,7 +73,7 @@ public class RewardsFragment extends Fragment {
                 if(editText.length() == 0){
                     toastMessage("No code was entered, please try again");
                 }
-                if(rewardsCodes.contains(editText.getText().toString())){
+                else if(rewardsCodes.contains(editText.getText().toString())){
                     if(!(myDb.getPoints() <= myDb.getCost(editText.getText().toString()))){
                         myDb.minusPoints(myDb.getCost(editText.getText().toString()));
                         showPopup("Code accepted, keep it up! Your new points balance is: " + myDb.getPoints());
@@ -84,7 +84,9 @@ public class RewardsFragment extends Fragment {
                         showPopup(getString(R.string.insufficientFunds));
 
                     }
-
+                }
+                else{
+                    toastMessage(getString(R.string.invalidCode));
                 }
             }
         });
@@ -110,7 +112,7 @@ public class RewardsFragment extends Fragment {
     }
 
     public void initialSetName(){
-        name.setText(getString(R.string.Hey)+ myDb.getName());
+        name.setText(getString(R.string.Hey)+ " "+  myDb.getName());
     }
 
     private List<String> addNewCodes(String path){

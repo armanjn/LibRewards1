@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Tim
                     popupNameContainer.setVisibility(View.INVISIBLE);
                     timerFragment.initialSetName();
                     rewardsFragment.initialSetName();
+                    showPopup(getString(R.string.helpInfo));
                 }
                 else{
                     toastMessage("No name was entered, please try again");
