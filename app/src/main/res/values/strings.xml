@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">LibRewards</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">Civice</string>
     <string name="start"> Start </string>
     <string name="stop"> Stop </string>
     <string name="timer"> Timer </string>
@@ -27,7 +26,6 @@
     <string name="enterName">Name</string>
     <string name="users_name_to_enter">users name to enter</string>
     <string name="letsGo">Let\'s Go!</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Hey">\Hey, </string>
     <string name="insufficientFunds">Woops! Unfortunately you don\'t have sufficient points for this reward. Please choose another reward
