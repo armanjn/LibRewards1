@@ -10,8 +10,6 @@ to a list.
 package com.example.librewards
 
 import android.content.Context
-import android.content.res.AssetManager
-import java.io.*
 import java.util.*
 
 class ListFromFile     //Parameter of 'Context' to state to the list which activity will be using the class

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="MainActivity">
+    tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/logo"
@@ -14,7 +14,6 @@
         android:contentDescription="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
@@ -61,16 +60,27 @@
 
     <ImageView
         android:id="@+id/helpButton"
-        android:layout_width="40dp"
-        android:layout_height="35dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:contentDescription="@string/helpButton"
         android:paddingStart="5dp"
         android:paddingTop="5dp"
         android:paddingEnd="0dp"
-        android:tint="@color/colorAccent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/help" />
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="1dp" />
 
     <FrameLayout
         android:id="@+id/popupNameContainer"
@@ -146,4 +156,5 @@
 
         </LinearLayout>
     </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

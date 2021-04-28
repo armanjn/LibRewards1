@@ -11,17 +11,29 @@ package com.example.librewards
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import com.example.civice.R
-import java.util.*
+import com.example.librewards.models.Universities
+import com.example.librewards.models.User
+import com.example.librewards.qrcode.QRCodeGenerator
+import com.google.common.hash.Hashing
+import com.google.firebase.database.*
+import java.io.IOException
+import java.io.InputStream
+import java.lang.Error
+import java.net.HttpURLConnection
+import java.net.URL
+import java.nio.charset.StandardCharsets
 
 class RewardsFragment : Fragment() {
     private lateinit var popup: Dialog
@@ -34,6 +46,8 @@ class RewardsFragment : Fragment() {
     private var rewardsCodes: List<String> = ArrayList()
     private var listener: RewardsListener? = null
     private lateinit var textToEdit: String
+    private lateinit var fh : FirebaseHandler
+    private lateinit var mainActivity : MainActivity
 
     //Interface that consists of a method that will update the points in "TimerFragment"
     interface RewardsListener {
@@ -45,18 +59,22 @@ class RewardsFragment : Fragment() {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_rewards, container, false)
         //Assigns the field to the view's specified in the fragment_timer XML file file
-        myDb = DatabaseHelper(activity!!.applicationContext)
+        mainActivity = activity as MainActivity
+        myDb = DatabaseHelper(requireActivity().applicationContext)
         rewardButton = v.findViewById(R.id.rewardButton)
         editText = v.findViewById(R.id.rewardText)
         points = v.findViewById(R.id.points2)
         points.text = myDb.myPoints.toString()
         name = v.findViewById(R.id.nameRewards)
+        fh = FirebaseHandler()
+
+
         //Sets the name of user for this fragment by retrieving it from the database
         val wholeName = getString(R.string.Hey) + " " + myDb.name
         name.text = wholeName
 
         //Creating a preference for activity on first start-up only
-        val rewardsPrefs = activity!!.getSharedPreferences("rewardsPrefs", Context.MODE_PRIVATE)
+        val rewardsPrefs = mainActivity.getSharedPreferences("rewardsPrefs", Context.MODE_PRIVATE)
         val firstStart = rewardsPrefs.getBoolean("firstStart", true)
         //Anything enclosed in the 'if' statement will only run once; at first start-up.
         if (firstStart) {
@@ -90,9 +108,30 @@ class RewardsFragment : Fragment() {
         return v
     }
 
+    private fun addRewardEventListener(timerReference: DatabaseReference) {
+        val refChild = fh.getChild("university_rewards",mainActivity.email, "studying")
+        var isStudying: String
+        val timerListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                isStudying = dataSnapshot.value.toString()
+                Log.d("TAG", isStudying)
+
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w("TAG", "Failed to read value.", error.toException())
+            }
+        }
+        refChild.addValueEventListener(timerListener)
+    }
+
+
+
     //Method that creates a custom popup
     private fun showPopup(text: String) {
-        popup = Dialog(activity!!)
+        popup = Dialog(requireActivity())
         popup.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         popup.setContentView(R.layout.popup_layout)
         val closeBtn = popup.findViewById<ImageView>(R.id.closeBtn)
@@ -110,7 +149,7 @@ class RewardsFragment : Fragment() {
 
     //Method that adds new reward codes to a list using the ListFromFile class
     private fun addNewCodes(path: String): List<String> {
-        listFromFile = ListFromFile(activity!!.applicationContext)
+        listFromFile = ListFromFile(requireActivity().applicationContext)
         val newList: List<String> = listFromFile.readRewardsLine(path)
         for (s in newList) Log.d(TAG, s)
         return newList
@@ -118,14 +157,14 @@ class RewardsFragment : Fragment() {
 
     //Adds the first set of reward codes to the database
     private fun addInitialCodes() {
-        listFromFile = ListFromFile(activity!!.applicationContext)
+        listFromFile = ListFromFile(requireActivity().applicationContext)
         val startList: List<String> = listFromFile.readRewardsLine("rewardcodes.txt")
         for (s in startList) Log.d(TAG, s)
         myDb.storeRewards(startList)
 
         //'firstStart' boolean is set to false which means that the the method will not run after first
         //start
-        val rewardsPrefs = activity!!.getSharedPreferences("rewardsPrefs", Context.MODE_PRIVATE)
+        val rewardsPrefs = requireActivity().getSharedPreferences("rewardsPrefs", Context.MODE_PRIVATE)
         val editor = rewardsPrefs.edit()
         editor.putBoolean("firstStart", false)
         editor.apply()
@@ -133,7 +172,7 @@ class RewardsFragment : Fragment() {
 
     //Method creating a custom Toast message
     private fun toastMessage(message: String) {
-        Toast.makeText(activity!!.applicationContext, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity().applicationContext, message, Toast.LENGTH_LONG).show()
     }
 
     //Method that is used between fragments to update each other's points
